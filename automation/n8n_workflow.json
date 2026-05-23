@@ -15,12 +15,12 @@
     },
     {
       "parameters": {
-        "model": "gpt-4o-mini",
+        "model": "gemini-2.5-flash",
         "prompt": "Aja como um especialista técnico em montanhismo e Copywriter sênior de E-commerce.\nVocê recebeu a imagem de um produto e o título de contexto: \"{{$node[\"Webhook\"].json[\"title\"]}}\".\n\nGere um output estritamente em formato JSON contendo duas chaves:\n1. \"description\": Uma descrição técnica e persuasiva em formato Markdown. Destaque atributos de segurança essenciais para escaladores. Use bullet points.\n2. \"slug\": Um slug amigável para SEO baseado no título (ex: kit-magnesio-liquido-escalada).\n\nRetorne APENAS o JSON bruto, sem blocos de código markdown.",
         "jsonOutput": true
       },
-      "name": "OpenAI",
-      "type": "n8n-nodes-base.openAi",
+      "name": "Gemini",
+      "type": "n8n-nodes-base.googleGemini",
       "typeVersion": 1,
       "position": [450, 300]
     },
@@ -82,7 +82,7 @@
           "parameters": [
             {
               "name": "mutations",
-              "value": "[\n    {\n      \"patch\": {\n        \"id\": \"{{$node[\"Webhook\"].json[\"id\"]}}\",\n        \"set\": {\n          \"descriptionHtml\": \"{{$node[\"OpenAI\"].json[\"description\"]}}\",\n          \"slug\": { \"_type\": \"slug\", \"current\": \"{{$node[\"OpenAI\"].json[\"slug\"]}}\" }\n        }\n      }\n    }\n  ]"
+              "value": "[\n    {\n      \"patch\": {\n        \"id\": \"{{$node[\"Webhook\"].json[\"id\"]}}\",\n        \"set\": {\n          \"descriptionHtml\": \"{{$node[\"Gemini\"].json[\"description\"]}}\",\n          \"slug\": { \"_type\": \"slug\", \"current\": \"{{$node[\"Gemini\"].json[\"slug\"]}}\" }\n        }\n      }\n    }\n  ]"
             }
           ]
         }
@@ -113,14 +113,14 @@
       "main": [
         [
           {
-            "node": "OpenAI",
+            "node": "Gemini",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "OpenAI": {
+    "Gemini": {
       "main": [
         [
           {
