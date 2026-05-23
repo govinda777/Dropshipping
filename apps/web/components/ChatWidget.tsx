@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from 'react';
+import { usePrivy } from '@privy-io/react-auth';
 
 export default function ChatWidget() {
+  const { user, authenticated } = usePrivy();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
   const [input, setInput] = useState('');
@@ -17,10 +19,16 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
+      // Extracts phone from Privy user if available
+      const phoneNumber = authenticated && user?.phone ? user.phone.number : null;
+      const contextMessage = phoneNumber
+        ? `[Usuário Logado Celular: ${phoneNumber}] ${userMessage}`
+        : userMessage;
+
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
+        body: JSON.stringify({ message: contextMessage }),
       });
 
       const data = await res.json();

@@ -21,11 +21,11 @@ A sua loja será construída em Next.js (App Router) usando o plano gratuito da 
 *   **O Site:** O Next.js puxará as informações (fotos, preços e a descrição criada pela IA) do Sanity. O site será focado apenas na conversão: visual limpo, carregamento quase instantâneo e sem distrações.
 *   **Design:** Como o Next.js suporta Tailwind CSS nativamente, a estilização será responsiva, funcionando perfeitamente nos celulares dos usuários que vierem do TikTok.
 
-### Fase 4: Checkout Transparente e Pix (Banco Neon)
-Chegou a hora de receber o dinheiro sem pagar comissões para plataformas.
-*   **O Checkout:** O cliente clica em "Comprar". O Next.js exibe uma tela de checkout limpa (sem redirecionar para outro site).
-*   **Geração do Pix:** Uma Serverless Function (API Route) na Vercel se comunica com o gateway (ex: **Efi** ou **Mercado Pago**) e gera o QR Code e o "Pix Copia e Cola" na tela do cliente. Você pagará apenas centavos fixos por essa transação aprovada.
-*   **Registro no Banco:** Assim que o cliente pagar, o banco avisa o seu sistema (Webhook). Nesse momento, os dados do cliente e o status "Pago" são salvos no **Neon** (banco de dados PostgreSQL serverless e gratuito).
+### Fase 4: Login Inteligente e Checkout (Privy + Pix)
+A experiência do cliente deve ser mágica e sem atritos, além de nos dar canais abertos de comunicação.
+*   **Login via Celular (Privy):** O cliente faz login usando o número de celular (SMS). Em background, o provedor **Privy** gera uma Smart Wallet invisível (Embedded Wallet) para o cliente, vinculada àquele número, preparando a estrutura para programas de fidelidade ou integrações Web3 no futuro sem que ele saiba o que é uma carteira crypto.
+*   **Comunicação Integrada:** Ao fazer login via SMS, o número de telefone capturado pelo Privy é passado como contexto. Dessa forma, podemos nos comunicar com o cliente via WhatsApp para avisos de entrega, e nossa IA do site (ChatWidget) passa a responder o cliente de maneira personalizada reconhecendo-o ativamente.
+*   **O Checkout:** O cliente clica em "Comprar" já logado. A Serverless Function (API Route) na Vercel se comunica com o gateway (ex: **Efi** ou **Mercado Pago**) e gera o Pix Copia e Cola. O status "Pago" é salvo instantaneamente no **Neon** (banco de dados PostgreSQL).
 
 ### Fase 5: Compra Automática na China (`ae_sdk`)
 Eliminamos intermediários como Dropi e DSers usando código puro.

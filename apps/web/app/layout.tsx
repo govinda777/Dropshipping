@@ -1,5 +1,6 @@
 import Script from 'next/script';
 import ChatWidget from '../components/ChatWidget';
+import Providers from '../components/Providers';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,8 +22,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {children}
-        <ChatWidget />
+        <Providers>
+          {children}
+          <ChatWidget />
+        </Providers>
       </body>
     </html>
   );
