@@ -3,15 +3,17 @@
 import { useState } from 'react';
 
 export default function AdminGeneratorPage() {
-  const [formData, setFormData] = useState({ supplierUrl: '', rawData: '', price: '' });
+  const [formData, setFormData] = useState({ supplierUrl: '', rawData: '', price: '', productImageUrl: '' });
   const [generatedData, setGeneratedData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
 
   const handleGenerate = async () => {
-    if (!formData.supplierUrl) return alert("A URL do fornecedor é obrigatória.");
+    if (!formData.supplierUrl || !formData.productImageUrl) {
+      return alert("A URL do fornecedor e a URL da foto do produto são obrigatórias.");
+    }
     setLoading(true);
-    setStatus('Avaliando produto e gerando artefatos com Gemini IA...');
+    setStatus('⏳ [1/2] Avaliando produto e gerando artefatos técnicos com a IA do Gemini...');
 
     try {
       const res = await fetch('/api/generate-content', {
@@ -35,7 +37,7 @@ export default function AdminGeneratorPage() {
 
   const handlePublish = async () => {
     setLoading(true);
-    setStatus('Publicando produto no Sanity...');
+    setStatus('⏳ [2/2] Fazendo upload da foto para os servidores e publicando o produto final no Sanity...');
 
     try {
       const payload = {
@@ -75,6 +77,16 @@ export default function AdminGeneratorPage() {
             className="w-full border p-2 rounded"
             value={formData.supplierUrl}
             onChange={e => setFormData({...formData, supplierUrl: e.target.value})}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">URL da Imagem Principal (Fornecedor)</label>
+          <input
+            type="url"
+            placeholder="Ex: https://ae01.alicdn.com/..."
+            className="w-full border p-2 rounded"
+            value={formData.productImageUrl}
+            onChange={e => setFormData({...formData, productImageUrl: e.target.value})}
           />
         </div>
         <div>

@@ -9,12 +9,9 @@ O foco aqui é a simplicidade extrema para você cadastrar produtos de escalada.
 
 ### Fase 2: O Agente de IA (Criação de Conteúdo Automática)
 Aqui o fluxo de inteligência artificial é centralizado diretamente no Next.js (Admin Interno), simplificando a operação sem depender do n8n para a etapa inicial de cadastro.
-*   **Ferramenta Interna (Gerador Next.js):** Você acessará uma página privada da sua loja (ex: `/admin/gerador`), onde informará os dados base do fornecedor (frase de contexto, preço, link).
-*   **Geração de Conteúdo e Base de Conhecimento:** Ao clicar em gerar, uma rota da sua própria API Next.js se comunica com o **Google Gemini**. O Gemini cria instantaneamente:
-    1. A descrição otimizada (SEO e conversão) em Markdown.
-    2. Roteiros de anúncios baseados em dados quentes.
-    3. As diretrizes e base de conhecimento exclusivas desse produto para alimentar o robô de atendimento (ChatWidget) na vitrine.
-*   **Publicação Imediata:** Você revisa os textos gerados na própria tela e clica em "Publicar". O Next.js envia os dados consolidados via API diretamente para o **Sanity CMS**. Pronto, o produto está no ar na sua loja!
+*   **Ferramenta Interna (Gerador Next.js):** Você acessará uma página privada da sua loja (`/admin/gerador`), onde informará os dados base do fornecedor: o link de origem, detalhes brutos e a URL da foto oficial do produto (direto da China).
+*   **Geração de Artefatos:** Ao clicar em gerar, a rota do seu Next.js chama o **Google Gemini**. A IA atua como um avaliador de qualidade e copywriter, avaliando a reputação do produto, criando checklists de certificações essenciais e uma base de conhecimento Q&A, além de estruturar todo o material de vendas otimizado para SEO em Markdown.
+*   **Upload Inteligente e Publicação:** Após aprovar os textos na tela, ao clicar em "Publicar", o Next.js faz o download da imagem do fornecedor nos bastidores e realiza o upload real desse arquivo para os servidores do Sanity. Ele vincula a foto ao documento final gerado pela IA e salva tudo de uma vez no seu banco. O produto nasce automaticamente completo na vitrine, sem nenhum esforço manual de download/upload.
 
 ### Fase 3: A Vitrine de Alta Velocidade (Next.js + Vercel)
 A sua loja será construída em Next.js (App Router) usando o plano gratuito da Vercel para garantir velocidade máxima e retenção de clientes.
