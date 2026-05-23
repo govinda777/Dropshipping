@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { neon } from '@neondatabase/serverless';
-
-const sql = neon(process.env.DATABASE_URL!);
+import { updateOrderStatus } from '../../../data/orders';
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -11,11 +9,7 @@ export async function POST(req: Request) {
 
   if (status === 'approved' || status === 'paid') {
     // Atualiza o banco Neon para 'PAGO'
-    await sql`
-      UPDATE orders
-      SET status = 'PAGO'
-      WHERE gateway_id = ${id.toString()}
-    `;
+    await updateOrderStatus(id.toString(), 'PAGO');
 
     // Dispara a Fase 5 de forma assíncrona (Pode chamar um script interno ou rota dedicada)
     fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/fulfillment`, {

@@ -1,8 +1,8 @@
-import { sql } from '../../../lib/db';
+import { getProducts } from '../../../data/products';
 import Image from 'next/image';
 
 export default async function ProdutosPage() {
-  const products = await sql`SELECT * FROM products ORDER BY created_at DESC`;
+  const products = await getProducts();
 
   return (
     <div>

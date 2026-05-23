@@ -1,8 +1,8 @@
-import { sql } from '../../../lib/db';
+import { getOrders } from '../../../data/orders';
 
 export default async function PedidosPage() {
   // In a real app this would join with products or user tables depending on schema complexity
-  const orders = await sql`SELECT * FROM orders ORDER BY created_at DESC`;
+  const orders = await getOrders();
 
   return (
     <div>

@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import CheckoutButton from '../../../components/CheckoutButton';
-import { sql } from '../../../lib/db';
+import { getProductBySlug } from '../../../data/products';
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   // Puxa o produto diretamente do PostgreSQL (Neon)
-  const products = await sql`SELECT * FROM products WHERE slug = ${params.slug} AND status = 'ACTIVE' LIMIT 1`;
-  const product = products[0];
+  const product = await getProductBySlug(params.slug);
 
   if (!product) return <div className="text-center p-10">Produto não encontrado.</div>;
 
