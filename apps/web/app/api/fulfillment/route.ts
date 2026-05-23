@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const aeOrder = await aeClient.createOrder({
       param_aeop_cl_open_create_order_req: {
         items: [{
-          product_id: order.aliexpress_product_id, // Capturado previamente no mapeamento do Sanity
+          product_id: order.aliexpress_order_id, // Na vdd salvamos o ID do produto nesta coluna por conveniencia do checkout
           quantity: 1,
           sku_attr: order.selected_sku || ""      // Cor, tamanho, etc.
         }],

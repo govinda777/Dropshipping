@@ -2,21 +2,20 @@
 
 Aqui está o plano de implementação completo para o seu repositório `https://github.com/govinda777/Dropshipping`. Ele foi desenhado para ser **simples de operar**, **100% transparente**, com **custo zero de infraestrutura** e integrado com inteligência artificial para criar conteúdo automaticamente.
 
-### Fase 1: O Painel de Gestão (Sanity CMS)
-O foco aqui é a simplicidade extrema para você cadastrar produtos de escalada. O Sanity Studio será o seu painel de controle administrativo, hospedado gratuitamente na Vercel.
-*   **Como vai funcionar:** Você não precisará escrever códigos ou preencher formulários complexos. Você abrirá o Sanity, criará um novo "Produto", fará o upload de uma ou duas fotos do fornecedor (ex: um kit de magnésio ou *hangboard*) e escreverá uma frase simples de contexto (ex: "Kit de magnésio líquido para escalada em rocha").
-*   **Transparência:** O Sanity permite edição visual em tempo real. Tudo o que você alterar lá, atualizará o site na mesma hora.
+### Fase 1: Painel Administrativo Centralizado (Next.js + Neon DB)
+Abandonamos soluções externas (como Sanity e n8n) para centralizar a operação em uma área administrativa exclusiva dentro do próprio site, tudo em TypeScript e Tailwind CSS.
+*   **Dashboard e Gestão Integrada:** No painel `/admin`, você tem visão completa: uma Lista de Produtos (foto, lucro, status, estoque) e uma Lista de Pedidos (dados do cliente, status Pix, envio via China e código de rastreio).
 
-### Fase 2: O Agente de IA (Criação de Conteúdo Automática)
-Aqui o fluxo de inteligência artificial é centralizado diretamente no Next.js (Admin Interno), simplificando a operação sem depender do n8n para a etapa inicial de cadastro.
-*   **Ferramenta Interna (Gerador Next.js):** Você acessará uma página privada da sua loja (`/admin/gerador`), onde informará os dados base do fornecedor: o link de origem, detalhes brutos e a URL da foto oficial do produto (direto da China).
-*   **Geração de Artefatos:** Ao clicar em gerar, a rota do seu Next.js chama o **Google Gemini**. A IA atua como um avaliador de qualidade e copywriter, avaliando a reputação do produto, criando checklists de certificações essenciais e uma base de conhecimento Q&A, além de estruturar todo o material de vendas otimizado para SEO em Markdown.
-*   **Upload Inteligente e Publicação:** Após aprovar os textos na tela, ao clicar em "Publicar", o Next.js faz o download da imagem do fornecedor nos bastidores e realiza o upload real desse arquivo para os servidores do Sanity. Ele vincula a foto ao documento final gerado pela IA e salva tudo de uma vez no seu banco. O produto nasce automaticamente completo na vitrine, sem nenhum esforço manual de download/upload.
+### Fase 2: Fluxo Assistido de Criação de Produto (Stepper com IA)
+A criação de um produto ocorre em 4 passos lineares focados em conversão e segurança:
+1. **Sourcing:** Você apenas cola o link do AliExpress. Nosso sistema puxa fotos, preço de custo e variantes usando a API do fornecedor.
+2. **Reputação:** O sistema avalia dados vitais do fornecedor (tempo de loja, avaliações, etc.) e você aprova antes de continuar.
+3. **Qualidade e Segurança Técnica:** O sistema escaneia os dados originais em busca de certificações críticas de escalada (UIAA, CE). Emite um alerta se não encontrar provas técnicas!
+4. **Gerador IA (Gemini) e Precificação:** A IA (Google Gemini) traduz e gera uma descrição otimizada, título em português e a base de conhecimento. Além disso, o sistema sugere o Preço de Venda ideal baseado nos seus custos. Você clica em "Publicar" e ele salva direto no seu banco PostgreSQL (Neon).
 
 ### Fase 3: A Vitrine de Alta Velocidade (Next.js + Vercel)
-A sua loja será construída em Next.js (App Router) usando o plano gratuito da Vercel para garantir velocidade máxima e retenção de clientes.
-*   **O Site:** O Next.js puxará as informações (fotos, preços e a descrição criada pela IA) do Sanity. O site será focado apenas na conversão: visual limpo, carregamento quase instantâneo e sem distrações.
-*   **Design:** Como o Next.js suporta Tailwind CSS nativamente, a estilização será responsiva, funcionando perfeitamente nos celulares dos usuários que vierem do TikTok.
+A sua loja é renderizada de forma ultrarrápida usando Next.js App Router (Vercel).
+*   **O Site:** O front-end consome diretamente os produtos aprovados do banco de dados Neon. O site foca apenas em conversão: layout em Tailwind, carregamento quase imediato e design responsivo perfeito para tráfego do TikTok.
 
 ### Fase 4: Login Inteligente e Checkout (Privy + Pix)
 A experiência do cliente deve ser mágica e sem atritos, além de nos dar canais abertos de comunicação.

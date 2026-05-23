@@ -18,6 +18,7 @@ Gere um output estritamente em formato JSON contendo as seguintes chaves:
 5. "technicalExplanation": Uma explicação técnica aprofundada dos mecanismos do produto (ideal para escaladores avançados).
 6. "descriptionHtml": Uma descrição comercial persuasiva otimizada para SEO em Markdown (juntando os benefícios, explicação técnica e certificações).
 7. "knowledgeBase": Uma base de dados (Q&A) de suporte técnico para treinar nossa IA de atendimento ao cliente.
+8. "suggestedPrice": Sugira um multiplicador de margem para precificar em reais (ex: devolva apenas um float como 2.5 ou 3.0 para basearmos o custo + lucro).
 
 Retorne APENAS o objeto JSON bruto, sem formatação de markdown \`\`\`json no início ou no fim.`;
 
