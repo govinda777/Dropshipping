@@ -8,10 +8,13 @@ O foco aqui é a simplicidade extrema para você cadastrar produtos de escalada.
 *   **Transparência:** O Sanity permite edição visual em tempo real. Tudo o que você alterar lá, atualizará o site na mesma hora.
 
 ### Fase 2: O Agente de IA (Criação de Conteúdo Automática)
-Aqui entra a automação para eliminar o seu trabalho de marketing e criação de descrições.
-*   **Gatilho (Webhook):** Assim que você clicar em "Publicar" no Sanity CMS, ele disparará um Webhook invisível para o **n8n** (que pode rodar localmente ou via automação simples).
-*   **Geração de Texto:** O n8n enviará a foto e a sua frase curta para uma IA (como a API da OpenAI/ChatGPT). A IA vai gerar uma descrição técnica, persuasiva e otimizada para SEO sobre o equipamento de escalada. O n8n devolverá esse texto pronto direto para o Sanity, preenchendo a página do produto sozinho.
-*   **Geração de Vídeo (TopView):** Simultaneamente, o n8n enviará a imagem do produto para a API do **TopView**. A IA criará um roteiro focado no TikTok, gerará um vídeo com um avatar realista demonstrando o produto e o enviará para o seu celular ou postará diretamente na conta do TikTok da loja.
+Aqui o fluxo de inteligência artificial é centralizado diretamente no Next.js (Admin Interno), simplificando a operação sem depender do n8n para a etapa inicial de cadastro.
+*   **Ferramenta Interna (Gerador Next.js):** Você acessará uma página privada da sua loja (ex: `/admin/gerador`), onde informará os dados base do fornecedor (frase de contexto, preço, link).
+*   **Geração de Conteúdo e Base de Conhecimento:** Ao clicar em gerar, uma rota da sua própria API Next.js se comunica com o **Google Gemini**. O Gemini cria instantaneamente:
+    1. A descrição otimizada (SEO e conversão) em Markdown.
+    2. Roteiros de anúncios baseados em dados quentes.
+    3. As diretrizes e base de conhecimento exclusivas desse produto para alimentar o robô de atendimento (ChatWidget) na vitrine.
+*   **Publicação Imediata:** Você revisa os textos gerados na própria tela e clica em "Publicar". O Next.js envia os dados consolidados via API diretamente para o **Sanity CMS**. Pronto, o produto está no ar na sua loja!
 
 ### Fase 3: A Vitrine de Alta Velocidade (Next.js + Vercel)
 A sua loja será construída em Next.js (App Router) usando o plano gratuito da Vercel para garantir velocidade máxima e retenção de clientes.
