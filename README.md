@@ -24,7 +24,7 @@ A sua loja será construída em Next.js (App Router) usando o plano gratuito da 
 ### Fase 4: Login Inteligente e Checkout (Privy + Pix)
 A experiência do cliente deve ser mágica e sem atritos, além de nos dar canais abertos de comunicação.
 *   **Login via Celular (Privy):** O cliente faz login usando o número de celular (SMS). Em background, o provedor **Privy** gera uma Smart Wallet invisível (Embedded Wallet) para o cliente, vinculada àquele número, preparando a estrutura para programas de fidelidade ou integrações Web3 no futuro sem que ele saiba o que é uma carteira crypto.
-*   **Comunicação Integrada:** Ao fazer login via SMS, o número de telefone capturado pelo Privy é passado como contexto. Dessa forma, podemos nos comunicar com o cliente via WhatsApp para avisos de entrega, e nossa IA do site (ChatWidget) passa a responder o cliente de maneira personalizada reconhecendo-o ativamente.
+*   **Comunicação Integrada:** Como o usuário estará logado, utilizaremos a sua **sessão ativa gerada pelo Privy** (o seu ID único ou endereço da carteira vinculada) para encontrá-lo no banco de dados e rotear as mensagens para ele. Nossa IA do site (ChatWidget) e nosso sistema usarão essa identificação de sessão para responder o cliente de maneira personalizada, seja diretamente na vitrine ou em contatos futuros integrados ao ID da sua conta.
 *   **O Checkout:** O cliente clica em "Comprar" já logado. A Serverless Function (API Route) na Vercel se comunica com o gateway (ex: **Efi** ou **Mercado Pago**) e gera o Pix Copia e Cola. O status "Pago" é salvo instantaneamente no **Neon** (banco de dados PostgreSQL).
 
 ### Fase 5: Compra Automática na China (`ae_sdk`)

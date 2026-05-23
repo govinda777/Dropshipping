@@ -19,10 +19,10 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
-      // Extracts phone from Privy user if available
-      const phoneNumber = authenticated && user?.phone ? user.phone.number : null;
-      const contextMessage = phoneNumber
-        ? `[Usuário Logado Celular: ${phoneNumber}] ${userMessage}`
+      // Extracts the active session ID from the Privy user
+      const sessionId = authenticated && user ? user.id : null;
+      const contextMessage = sessionId
+        ? `[Sessão de Usuário Logado: ${sessionId}] ${userMessage}`
         : userMessage;
 
       const res = await fetch('/api/chat', {
