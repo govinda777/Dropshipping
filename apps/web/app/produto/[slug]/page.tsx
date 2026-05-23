@@ -1,6 +1,12 @@
 import { createClient } from '@sanity/client';
 import Image from 'next/image';
 
+const CheckoutButton = ({ product }: { product: any }) => (
+  <button className="bg-emerald-600 text-white font-bold py-4 px-8 rounded-lg mt-4 w-full">
+    Comprar Agora no Pix
+  </button>
+);
+
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: 'production',
