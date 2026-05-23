@@ -5,8 +5,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Dropship Admin</h1>
           <nav className="flex gap-4 text-sm font-medium">
-            <a href="/admin/produtos" className="hover:text-emerald-200">Produtos</a>
-            <a href="/admin/pedidos" className="hover:text-emerald-200">Pedidos</a>
+            <a href="/admin/products" className="hover:text-emerald-200">Produtos</a>
+            <a href="/admin/orders" className="hover:text-emerald-200">Pedidos</a>
             <a href="/" className="hover:text-emerald-200 ml-4 border-l border-emerald-600 pl-4">Ir para Loja</a>
           </nav>
         </div>

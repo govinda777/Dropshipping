@@ -4,10 +4,10 @@ Aqui está o plano de implementação completo para o seu repositório `https://
 
 ### Fase 1: Painel Administrativo Centralizado (Next.js + Neon DB)
 Abandonamos soluções externas (como Sanity e n8n) para centralizar a operação em uma área administrativa exclusiva dentro do próprio site, tudo em TypeScript e Tailwind CSS.
-*   **Dashboard e Gestão Integrada:** No painel `/admin`, você tem visão completa: uma Lista de Produtos (foto, lucro, status, estoque) e uma Lista de Pedidos (dados do cliente, status Pix, envio via China e código de rastreio).
+*   **Dashboard e Gestão Integrada:** No painel `/admin`, você tem visão completa: uma Lista de Produtos (`/admin/products`) e uma Lista de Pedidos (`/admin/orders`).
 
 ### Fase 2: Fluxo Assistido de Criação de Produto (Stepper com IA)
-A criação de um produto ocorre em 4 passos lineares focados em conversão e segurança:
+A criação de um produto (`/admin/products/new`) ocorre em 4 passos lineares focados em conversão e segurança:
 1. **Sourcing:** Você apenas cola o link do AliExpress. Nosso sistema puxa fotos, preço de custo e variantes usando a API do fornecedor.
 2. **Reputação:** O sistema avalia dados vitais do fornecedor (tempo de loja, avaliações, etc.) e você aprova antes de continuar.
 3. **Qualidade e Segurança Técnica:** O sistema escaneia os dados originais em busca de certificações críticas de escalada (UIAA, CE). Emite um alerta se não encontrar provas técnicas!

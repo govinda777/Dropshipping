@@ -99,7 +99,7 @@ export default function NewProductStepper() {
       if (data.error) throw new Error(data.error);
 
       alert('🚀 Produto publicado com sucesso!');
-      router.push('/admin/produtos');
+      router.push('/admin/products');
     } catch (e) {
       console.error(e);
       setStatus('Erro ao publicar produto no banco.');

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        systemInstruction: {
+        system_instruction: {
           parts: [{ text: 'Você é um assistente de atendimento ao cliente para uma loja de dropshipping focada em equipamentos de escalada. Responda dúvidas sobre produtos, envio (AliExpress) e pagamentos (Pix).' }]
         },
         contents: [

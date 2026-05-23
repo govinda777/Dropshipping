@@ -9,7 +9,7 @@ export default async function ProdutosPage() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Catálogo de Produtos</h2>
         <a
-          href="/admin/produtos/novo"
+          href="/admin/products/new"
           className="bg-emerald-600 text-white px-4 py-2 rounded shadow hover:bg-emerald-700"
         >
           + Criar Novo Produto
