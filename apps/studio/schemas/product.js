@@ -32,6 +32,31 @@ export default {
     },
     // --- CAMPOS PREENCHIDOS AUTOMATICAMENTE PELA IA ---
     {
+      name: 'qualityEvaluation',
+      title: 'Avaliação de Qualidade e Reputação',
+      type: 'text',
+      readOnly: true
+    },
+    {
+      name: 'certificationsChecklist',
+      title: 'Checklist de Certificações',
+      type: 'array',
+      of: [{type: 'string'}],
+      readOnly: true
+    },
+    {
+      name: 'technicalExplanation',
+      title: 'Explicação Técnica Aprofundada',
+      type: 'text',
+      readOnly: true
+    },
+    {
+      name: 'knowledgeBase',
+      title: 'Base de Conhecimento (Q&A do Robô)',
+      type: 'text',
+      readOnly: true
+    },
+    {
       name: 'descriptionHtml',
       title: 'Descrição Otimizada por IA (Preenchimento Automático)',
       type: 'markdown', // Habilita formatação técnica rica

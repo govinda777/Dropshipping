@@ -1,6 +1,7 @@
 import Script from 'next/script';
 import ChatWidget from '../components/ChatWidget';
 import Providers from '../components/Providers';
+import LoginButton from '../components/LoginButton';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,6 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <Providers>
+          <div className="absolute top-4 right-4 z-50">
+            <LoginButton />
+          </div>
           {children}
           <ChatWidget />
         </Providers>

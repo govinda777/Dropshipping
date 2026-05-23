@@ -3,15 +3,15 @@
 import { useState } from 'react';
 
 export default function AdminGeneratorPage() {
-  const [formData, setFormData] = useState({ title: '', details: '', price: '', supplierUrl: '' });
+  const [formData, setFormData] = useState({ supplierUrl: '', rawData: '', price: '' });
   const [generatedData, setGeneratedData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
 
   const handleGenerate = async () => {
-    if (!formData.title) return alert("O título é obrigatório.");
+    if (!formData.supplierUrl) return alert("A URL do fornecedor é obrigatória.");
     setLoading(true);
-    setStatus('Gerando conteúdo com Gemini IA...');
+    setStatus('Avaliando produto e gerando artefatos com Gemini IA...');
 
     try {
       const res = await fetch('/api/generate-content', {
@@ -66,19 +66,28 @@ export default function AdminGeneratorPage() {
       <h1 className="text-3xl font-bold mb-8">Gerador de Produto IA</h1>
 
       <div className="grid gap-4 mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
-        <h2 className="text-xl font-semibold mb-2">Passo 1: Dados Base</h2>
+        <h2 className="text-xl font-semibold mb-2">Passo 1: Fonte de Dados do Fornecedor</h2>
         <div>
-          <label className="block text-sm font-medium mb-1">Título / Contexto</label>
+          <label className="block text-sm font-medium mb-1">URL / Link do AliExpress</label>
           <input
             type="text"
-            placeholder="Ex: Kit de Magnésio Líquido"
+            placeholder="Ex: https://pt.aliexpress.com/item/..."
             className="w-full border p-2 rounded"
-            value={formData.title}
-            onChange={e => setFormData({...formData, title: e.target.value})}
+            value={formData.supplierUrl}
+            onChange={e => setFormData({...formData, supplierUrl: e.target.value})}
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Preço de Venda (R$)</label>
+          <label className="block text-sm font-medium mb-1">Dados Brutos / Especificações Copiadas</label>
+          <textarea
+            className="w-full border p-2 rounded h-24"
+            placeholder="Cole aqui a descrição gringa, tabelas técnicas, ou detalhes brutos..."
+            value={formData.rawData}
+            onChange={e => setFormData({...formData, rawData: e.target.value})}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Nosso Preço de Venda (R$)</label>
           <input
             type="number"
             placeholder="Ex: 149.90"
@@ -87,31 +96,13 @@ export default function AdminGeneratorPage() {
             onChange={e => setFormData({...formData, price: e.target.value})}
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Link do AliExpress</label>
-          <input
-            type="text"
-            className="w-full border p-2 rounded"
-            value={formData.supplierUrl}
-            onChange={e => setFormData({...formData, supplierUrl: e.target.value})}
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Detalhes Adicionais (Fornecedor)</label>
-          <textarea
-            className="w-full border p-2 rounded h-24"
-            placeholder="Cole aqui detalhes brutos do fornecedor para a IA analisar..."
-            value={formData.details}
-            onChange={e => setFormData({...formData, details: e.target.value})}
-          />
-        </div>
 
         <button
           onClick={handleGenerate}
           disabled={loading}
-          className="bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2 hover:bg-blue-700 disabled:opacity-50"
+          className="bg-blue-600 text-white font-bold py-3 px-4 rounded mt-4 hover:bg-blue-700 disabled:opacity-50"
         >
-          {loading ? 'Processando...' : '✨ Gerar Conteúdo com IA'}
+          {loading ? 'Analisando e Gerando...' : '✨ Avaliar Produto e Gerar Artefatos (IA)'}
         </button>
       </div>
 
@@ -119,20 +110,54 @@ export default function AdminGeneratorPage() {
 
       {generatedData && (
         <div className="grid gap-4 p-6 bg-emerald-50 rounded-lg border border-emerald-200">
-          <h2 className="text-xl font-semibold mb-2 text-emerald-900">Passo 2: Revisão e Publicação</h2>
+          <h2 className="text-xl font-semibold mb-2 text-emerald-900">Passo 2: Avaliação e Artefatos (PT-BR)</h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold mb-1 text-emerald-800">Título Otimizado</label>
+              <input
+                type="text"
+                className="w-full border border-emerald-300 p-2 rounded bg-white"
+                value={generatedData.title}
+                onChange={e => setGeneratedData({...generatedData, title: e.target.value})}
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold mb-1 text-emerald-800">Slug URL</label>
+              <input
+                type="text"
+                className="w-full border border-emerald-300 p-2 rounded bg-white"
+                value={generatedData.slug}
+                onChange={e => setGeneratedData({...generatedData, slug: e.target.value})}
+              />
+            </div>
+          </div>
+
+          <div className="p-4 bg-orange-100 border border-orange-300 rounded text-sm text-orange-900">
+            <h3 className="font-bold mb-1">⚖️ Avaliação de Qualidade e Reputação</h3>
+            <p>{generatedData.qualityEvaluation}</p>
+          </div>
+
+          <div className="p-4 bg-blue-100 border border-blue-300 rounded text-sm text-blue-900">
+            <h3 className="font-bold mb-1">✅ Checklist de Certificações (Segurança)</h3>
+            <ul className="list-disc pl-5">
+              {generatedData.certificationsChecklist?.map((cert: string, idx: number) => (
+                <li key={idx}>{cert}</li>
+              ))}
+            </ul>
+          </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 text-emerald-800">Slug URL</label>
-            <input
-              type="text"
-              className="w-full border border-emerald-300 p-2 rounded bg-white"
-              value={generatedData.slug}
-              onChange={e => setGeneratedData({...generatedData, slug: e.target.value})}
+            <label className="block text-sm font-bold mb-1 text-emerald-800">Explicação Técnica Aprofundada</label>
+            <textarea
+              className="w-full border border-emerald-300 p-2 rounded h-24 bg-white"
+              value={generatedData.technicalExplanation}
+              onChange={e => setGeneratedData({...generatedData, technicalExplanation: e.target.value})}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 text-emerald-800">Descrição Comercial Otimizada (Markdown)</label>
+            <label className="block text-sm font-bold mb-1 text-emerald-800">Descrição Comercial Completa (Markdown / Site)</label>
             <textarea
               className="w-full border border-emerald-300 p-2 rounded h-40 bg-white"
               value={generatedData.descriptionHtml}
@@ -141,7 +166,7 @@ export default function AdminGeneratorPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1 text-emerald-800">Base de Conhecimento (Instrução para Robô de Atendimento)</label>
+            <label className="block text-sm font-bold mb-1 text-emerald-800">Base de Conhecimento (Robô de Atendimento Q&A)</label>
             <textarea
               className="w-full border border-emerald-300 p-2 rounded h-24 bg-white"
               value={generatedData.knowledgeBase}

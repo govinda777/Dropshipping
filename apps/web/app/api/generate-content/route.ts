@@ -2,17 +2,22 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
   try {
-    const { title, details } = await req.json();
+    const { supplierUrl, rawData } = await req.json();
 
-    const prompt = `Aja como um especialista técnico em montanhismo, SEO e Copywriter sênior de E-commerce.
-Você recebeu os seguintes dados base de um produto:
-Título/Contexto: "${title}"
-Detalhes Adicionais: "${details}"
+    const prompt = `Aja como um especialista em avaliação de qualidade de e-commerce, montanhista técnico experiente e Copywriter sênior.
+Você recebeu a URL e dados brutos de um fornecedor (China) para um equipamento de escalada:
+URL: "${supplierUrl}"
+Dados Brutos/Artefatos extraídos: "${rawData}"
 
-Gere um output estritamente em formato JSON contendo três chaves:
-1. "descriptionHtml": Uma descrição técnica, persuasiva e otimizada para SEO em formato Markdown. Destaque atributos de segurança essenciais para escaladores (Ex: conformidade com normas, aderência, durabilidade). Use bullet points.
-2. "slug": Um slug amigável para SEO (ex: kit-magnesio-liquido-escalada).
-3. "knowledgeBase": Um parágrafo com as principais características técnicas e dúvidas frequentes respondidas sobre este produto para treinar nosso robô de IA de atendimento.
+Sua tarefa é analisar esses dados, atuar como avaliador de qualidade e reputação, traduzir e gerar os artefatos finais em Português (PT-BR).
+Gere um output estritamente em formato JSON contendo as seguintes chaves:
+1. "title": Um título otimizado e comercial em português.
+2. "slug": Um slug amigável para SEO (ex: mosquetao-aluminio-trava).
+3. "qualityEvaluation": Sua avaliação sincera da reputação do produto e fornecedor com base nos dados. O produto parece confiável para a prática perigosa da escalada?
+4. "certificationsChecklist": Uma lista (array de strings) com o checklist das principais certificações de segurança e qualidade requeridas e identificadas (ex: UIAA, CE EN).
+5. "technicalExplanation": Uma explicação técnica aprofundada dos mecanismos do produto (ideal para escaladores avançados).
+6. "descriptionHtml": Uma descrição comercial persuasiva otimizada para SEO em Markdown (juntando os benefícios, explicação técnica e certificações).
+7. "knowledgeBase": Uma base de dados (Q&A) de suporte técnico para treinar nossa IA de atendimento ao cliente.
 
 Retorne APENAS o objeto JSON bruto, sem formatação de markdown \`\`\`json no início ou no fim.`;
 

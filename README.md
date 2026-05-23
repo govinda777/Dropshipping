@@ -38,10 +38,10 @@ A transparência com o cliente é garantida sem que você precise trabalhar como
 *   **O "Robô" de Rastreio:** No seu repositório no GitHub, você configurará um arquivo `.yml` no **GitHub Actions** para rodar a cada 2 horas.
 *   **O Processo:** Esse script entra no Neon, puxa os pedidos "Em Processamento" e usa o `ae_sdk` para consultar o AliExpress. Se o chinês já tiver despachado o mosquetão ou o kit de escalada, o GitHub Actions pega o código de rastreio, salva no banco e dispara uma mensagem via API de WhatsApp (ou e-mail automático via Resend) avisando o cliente.
 
-**Resumo da sua rotina operacional com esse plano:**
-1. Você cadastra 1 foto e 1 frase no Sanity.
-2. A IA cria a descrição do site e o vídeo do TikTok.
-3. O cliente assiste, entra no seu Next.js super rápido e paga no Pix.
-4. O `ae_sdk` faz o pedido na China sozinho.
-5. O GitHub Actions avisa o cliente sobre o rastreio.
-6. Custo de plataforma: R$ 0,00. Comissão: 0%. Controle: 100% seu.
+**Resumo da nova rotina operacional com IA Centralizada:**
+1. Você cola o Link do Fornecedor na página interna do seu E-commerce.
+2. A IA (Google Gemini) avalia a reputação do produto, traduz os artefatos, cria um checklist de certificações de segurança e gera os roteiros de venda, postando no Sanity.
+3. O cliente (identificado via Privy) assiste aos vídeos, entra no Next.js, interage com a IA e paga via Pix.
+4. O SDK do AliExpress compra e despacha o pedido na China de forma silenciosa.
+5. O GitHub Actions sincroniza o rastreamento automaticamente.
+6. Custo de infraestrutura web: R$ 0,00. Controle total dos dados: 100% seu.

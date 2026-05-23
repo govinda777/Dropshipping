@@ -18,6 +18,9 @@ export async function POST(req: Request) {
               title: body.title,
               price: Number(body.price),
               supplierUrl: body.supplierUrl,
+              qualityEvaluation: body.qualityEvaluation,
+              certificationsChecklist: body.certificationsChecklist,
+              technicalExplanation: body.technicalExplanation,
               descriptionHtml: body.descriptionHtml,
               slug: {
                 _type: 'slug',

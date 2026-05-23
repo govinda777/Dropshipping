@@ -20,8 +20,12 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   return (
     <main className="max-w-4xl mx-auto p-4 md:py-12 grid md:grid-cols-2 gap-8 font-sans">
-      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-gray-100">
-        <Image src={product.imageUrl} alt={product.title} fill className="object-cover" priority />
+      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center">
+        {product.imageUrl ? (
+          <Image src={product.imageUrl} alt={product.title} fill className="object-cover" priority />
+        ) : (
+          <span className="text-gray-400 font-medium">Imagem indisponível</span>
+        )}
       </div>
       <div className="flex flex-col justify-between">
         <div>
