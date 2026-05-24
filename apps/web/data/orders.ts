@@ -6,8 +6,14 @@ export async function getOrders() {
 
 export async function createOrder(data: any) {
   return await sql`
-    INSERT INTO orders (gateway_id, customer_name, customer_email, customer_cpf, product_id, product_title, shipping_address, status, aliexpress_order_id)
-    VALUES (${data.gatewayOrderId}, ${data.customerName}, ${data.customerEmail}, ${data.customerCpf}, ${data.productId}, ${data.productTitle}, ${JSON.stringify(data.shippingAddress)}, 'PENDENTE', ${data.aliexpressProductId})
+    INSERT INTO orders (
+      gateway_id, privy_user_id, product_id, product_title,
+      selected_sku, shipping_address, status, aliexpress_product_id
+    )
+    VALUES (
+      ${data.gatewayOrderId}, ${data.privyUserId}, ${data.productId}, ${data.productTitle},
+      ${data.selectedSku || null}, ${JSON.stringify(data.shippingAddress)}, 'PENDENTE', ${data.aliexpressProductId}
+    )
     RETURNING id
   `;
 }

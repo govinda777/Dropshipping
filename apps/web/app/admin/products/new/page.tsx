@@ -87,7 +87,8 @@ export default function NewProductStepper() {
         certificationsChecklist: aiGeneratedData.certificationsChecklist,
         technicalExplanation: aiGeneratedData.technicalExplanation,
         descriptionHtml: aiGeneratedData.descriptionHtml,
-        knowledgeBase: aiGeneratedData.knowledgeBase
+        knowledgeBase: aiGeneratedData.knowledgeBase,
+        variants: supplierData.variants
       };
 
       const res = await fetch('/api/publish-product', {

@@ -27,11 +27,13 @@ export default async function PedidosPage() {
                 <td colSpan={5} className="p-8 text-center text-gray-500">Nenhum pedido recebido ainda.</td>
               </tr>
             )}
-            {orders.map((o) => (
+            {orders.map((o) => {
+              const shipping = typeof o.shipping_address === 'string' ? JSON.parse(o.shipping_address) : o.shipping_address;
+              return (
               <tr key={o.id} className="hover:bg-gray-50">
                 <td className="p-4">
-                  <div className="font-medium text-gray-800">{o.customer_name}</div>
-                  <div className="text-xs text-gray-500">{o.customer_cpf}</div>
+                  <div className="font-medium text-gray-800">{shipping.name || 'Cliente'}</div>
+                  <div className="text-xs text-gray-500">{o.privy_user_id?.split(':').pop() || o.id}</div>
                 </td>
                 <td className="p-4 text-gray-600">{o.product_title}</td>
                 <td className="p-4">
@@ -58,7 +60,8 @@ export default async function PedidosPage() {
                   )}
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </div>

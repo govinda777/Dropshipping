@@ -63,6 +63,21 @@ export default async function ProductPage({ params }: { params: { slug: string }
             <div dangerouslySetInnerHTML={{ __html: product.description_html }} />
           </div>
         </div>
+        {/* Mapeamento de Variantes se existirem */}
+        {product.variants_map && product.variants_map.length > 0 && (
+          <div className="mb-6">
+            <h3 className="font-bold text-gray-800 mb-2">Opções Disponíveis:</h3>
+            <div className="flex gap-2 flex-wrap">
+               {product.variants_map.map((v: any) => (
+                 <span key={v.skuId} className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 bg-white">
+                   {v.name}
+                 </span>
+               ))}
+            </div>
+            <p className="text-xs text-gray-400 mt-2">*A seleção de variantes é gerenciada no checkout.</p>
+          </div>
+        )}
+
         {/* Componente Client-Side do Botão de Compra e Instanciação do Checkout */}
         <CheckoutButton product={{...product, price: Number(product.sell_price)}} />
       </div>

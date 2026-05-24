@@ -29,4 +29,6 @@ jobs:
           ALIEXPRESS_SESSION_KEY: ${{ secrets.ALIEXPRESS_SESSION_KEY }}
           WHATSAPP_API_KEY: ${{ secrets.WHATSAPP_API_KEY }}
           WHATSAPP_INSTANCE_URL: ${{ secrets.WHATSAPP_INSTANCE_URL }}
+          PRIVY_APP_ID: ${{ secrets.PRIVY_APP_ID }}
+          PRIVY_APP_SECRET: ${{ secrets.PRIVY_APP_SECRET }}
         run: node automation/syncTracking.js

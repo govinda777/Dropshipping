@@ -82,8 +82,10 @@ DATABASE_URL="postgresql://usuario:senha@ep-seu-banco.neon.tech/neondb"
 # Inteligência Artificial (Google AI Studio)
 GEMINI_API_KEY="AIzaSy_SuaChaveAqui"
 
-# Autenticação Web3 (Privy.io)
+# Autenticação Web3 (Privy.io) e Roles
 NEXT_PUBLIC_PRIVY_APP_ID="seu_app_id_privy"
+PRIVY_APP_SECRET="seu_app_secret_privy_para_buscas_server_side"
+ADMIN_PRIVY_ID="did:privy:seu_id_do_administrador_para_proteger_as_rotas"
 
 # Gateway de Pagamento (Mercado Pago ou Efí)
 GATEWAY_ACCESS_TOKEN="APP_USR-seu-token"

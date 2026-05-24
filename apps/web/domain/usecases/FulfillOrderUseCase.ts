@@ -24,12 +24,12 @@ export class FulfillOrderUseCase {
     const aeOrder = await this.aeClient.createOrder({
       param_aeop_cl_open_create_order_req: {
         items: [{
-          product_id: order.aliexpress_order_id,
+          product_id: order.aliexpress_product_id,
           quantity: 1,
           sku_attr: order.selected_sku || ""
         }],
         shipping_address: {
-          contact_person: order.customer_name,
+          contact_person: addr.name || "Cliente", // Extracted from shipping payload instead of db column
           phone_country_code: "55",
           mobile_no: addr.phone,
           address_line1: `${addr.street}, ${addr.number}`,

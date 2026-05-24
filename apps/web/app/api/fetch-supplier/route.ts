@@ -15,7 +15,11 @@ export async function POST(req: Request) {
     const mockData = {
       productImageUrl: "https://via.placeholder.com/600", // Simulated image extraction
       costPrice: 45.00, // Simulated cost price in BRL
-      rawData: "Produto de escalada mosquetão de alumínio 25KN trava automática CE UIAA supplier info..." // Simulated raw data
+      rawData: "Produto de escalada mosquetão de alumínio 25KN trava automática CE UIAA supplier info...", // Simulated raw data
+      variants: [
+        { skuId: "14:193", name: "Azul Marinho" },
+        { skuId: "14:175", name: "Vermelho Fogo" }
+      ] // Simulated variants extraction
     };
 
     return NextResponse.json(mockData);

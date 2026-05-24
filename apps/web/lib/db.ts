@@ -26,6 +26,7 @@ export async function initializeDatabaseSchema() {
       technical_explanation TEXT,
       description_html TEXT NOT NULL,
       knowledge_base TEXT,
+      variants_map JSONB,
       status VARCHAR(50) DEFAULT 'ACTIVE',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
@@ -36,15 +37,13 @@ export async function initializeDatabaseSchema() {
     CREATE TABLE IF NOT EXISTS orders (
       id SERIAL PRIMARY KEY,
       gateway_id VARCHAR(255) UNIQUE NOT NULL,
-      customer_name VARCHAR(255) NOT NULL,
-      customer_email VARCHAR(255) NOT NULL,
-      customer_cpf VARCHAR(20) NOT NULL,
-      customer_phone VARCHAR(20),
-      privy_session_id VARCHAR(255),
+      privy_user_id VARCHAR(255) NOT NULL,
       product_id INTEGER REFERENCES products(id),
       product_title VARCHAR(255) NOT NULL,
+      selected_sku VARCHAR(255),
       shipping_address JSONB NOT NULL,
       status VARCHAR(50) DEFAULT 'PENDENTE',
+      aliexpress_product_id VARCHAR(255),
       aliexpress_order_id VARCHAR(255),
       tracking_code VARCHAR(100),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

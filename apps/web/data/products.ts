@@ -19,12 +19,12 @@ export async function createProduct(data: any) {
     INSERT INTO products (
       slug, title, cost_price, sell_price, image_url, supplier_url,
       quality_evaluation, certifications_checklist, technical_explanation,
-      description_html, knowledge_base
+      description_html, knowledge_base, variants_map
     ) VALUES (
       ${data.slug}, ${data.title}, ${Number(data.costPrice || 0)}, ${Number(data.price)},
       ${data.productImageUrl}, ${data.supplierUrl}, ${data.qualityEvaluation},
       ${JSON.stringify(data.certificationsChecklist || [])}, ${data.technicalExplanation},
-      ${data.descriptionHtml}, ${data.knowledgeBase}
+      ${data.descriptionHtml}, ${data.knowledgeBase}, ${JSON.stringify(data.variants || [])}
     ) RETURNING id
   `;
 }

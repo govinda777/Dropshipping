@@ -4,10 +4,12 @@ import { createOrder } from '../../data/orders';
 export class ProcessCheckoutUseCase {
   async execute(params: {
     productId: number;
-    customerName: string;
-    customerCpf: string;
-    customerEmail: string;
+    customerName: string; // Only used locally for payment gateway
+    customerCpf: string; // Only used locally for payment gateway
+    customerEmail: string; // Only used locally for payment gateway
+    privyUserId: string; // Used for database persistence (Privacy by Design)
     shippingAddress: any;
+    selectedSku?: string;
   }) {
     const product = await getProductById(params.productId);
 
@@ -44,11 +46,10 @@ export class ProcessCheckoutUseCase {
 
     await createOrder({
       gatewayOrderId,
-      customerName: params.customerName,
-      customerEmail: params.customerEmail,
-      customerCpf: params.customerCpf,
+      privyUserId: params.privyUserId,
       productId: product.id,
       productTitle: product.title,
+      selectedSku: params.selectedSku,
       shippingAddress: params.shippingAddress,
       aliexpressProductId
     });
