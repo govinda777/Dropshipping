@@ -1,0 +1,34 @@
+name: Sincronização de Rastreio AliExpress
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Executa a cada 2 horas de forma 100% gratuita
+  workflow_dispatch: # Permite execução manual pelo painel do GitHub se necessário
+
+jobs:
+  sync-tracking:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm install ae_sdk @neondatabase/serverless dotenv
+
+      - name: Executar Script de Atualização
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ALIEXPRESS_APP_KEY: ${{ secrets.ALIEXPRESS_APP_KEY }}
+          ALIEXPRESS_APP_SECRET: ${{ secrets.ALIEXPRESS_APP_SECRET }}
+          ALIEXPRESS_SESSION_KEY: ${{ secrets.ALIEXPRESS_SESSION_KEY }}
+          WHATSAPP_API_KEY: ${{ secrets.WHATSAPP_API_KEY }}
+          WHATSAPP_INSTANCE_URL: ${{ secrets.WHATSAPP_INSTANCE_URL }}
+          PRIVY_APP_ID: ${{ secrets.PRIVY_APP_ID }}
+          PRIVY_APP_SECRET: ${{ secrets.PRIVY_APP_SECRET }}
+        run: node automation/syncTracking.js
