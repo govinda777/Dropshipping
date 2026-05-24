@@ -16,8 +16,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         },
         // Configuração de embedded wallets (Smart Wallets) para o usuário
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
-          noPromptOnSignature: true // Para uma experiência Web2 fluida no E-commerce
+          ethereum: {
+            createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
+          }
         }
       }}
     >
