@@ -1,30 +1,23 @@
 import { NextResponse } from 'next/server';
+import { FetchSupplierDataUseCase } from '../../../domain/usecases/FetchSupplierDataUseCase';
+import { MockSupplierService } from '../../../infrastructure/services/MockSupplierService';
+import { AliExpressSupplierService } from '../../../infrastructure/services/AliExpressSupplierService';
 
 export async function POST(req: Request) {
   try {
     const { url } = await req.json();
 
-    if (!url) return NextResponse.json({ error: 'URL do fornecedor é obrigatória' }, { status: 400 });
+    // Dependency Injection Factory based on environment configuration
+    // Defaulting to mock if the flag isn't explicitly set to 'false' to preserve dev flow
+    const useMock = process.env.USE_MOCK_SUPPLIER !== 'false';
+    const supplierService = useMock ? new MockSupplierService() : new AliExpressSupplierService();
 
-    // Simulate calling the AliExpress SDK / Web Scraper to fetch product data
-    // In a real scenario, this would use ae_sdk to fetch product details based on the URL/ID
+    const useCase = new FetchSupplierDataUseCase(supplierService);
+    const data = await useCase.execute(url);
 
-    // Artificial delay to simulate network request
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    const mockData = {
-      productImageUrl: "https://via.placeholder.com/600", // Simulated image extraction
-      costPrice: 45.00, // Simulated cost price in BRL
-      rawData: "Produto de escalada mosquetão de alumínio 25KN trava automática CE UIAA supplier info...", // Simulated raw data
-      variants: [
-        { skuId: "14:193", name: "Azul Marinho" },
-        { skuId: "14:175", name: "Vermelho Fogo" }
-      ] // Simulated variants extraction
-    };
-
-    return NextResponse.json(mockData);
-  } catch (error) {
+    return NextResponse.json(data);
+  } catch (error: any) {
     console.error('Erro ao buscar dados do fornecedor:', error);
-    return NextResponse.json({ error: 'Falha ao conectar com fornecedor' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Falha ao conectar com fornecedor' }, { status: error.message.includes('inválida') ? 400 : 500 });
   }
 }
