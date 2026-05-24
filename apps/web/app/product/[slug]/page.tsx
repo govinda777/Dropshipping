@@ -1,7 +1,42 @@
 import Image from 'next/image';
 import CheckoutButton from '../../../components/CheckoutButton';
 import { getProductBySlug } from '../../../data/products';
+import { Metadata } from 'next';
 
+// 1. Geração Dinâmica de SEO (Otimização para o Google)
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const product = await getProductBySlug(params.slug);
+
+  if (!product) {
+    return { title: 'Produto não encontrado | Sua Loja' };
+  }
+
+  // Remove tags HTML da descrição para usar no meta description do Google
+  const plainTextDescription = product.description_html.replace(/<[^>]+>/g, '').substring(0, 160) + '...';
+
+  return {
+    title: `${product.title} | Equipamentos de Escalada`,
+    description: plainTextDescription,
+    alternates: {
+      canonical: `https://seusite.com.br/product/${product.slug}`,
+    },
+    openGraph: {
+      title: product.title,
+      description: plainTextDescription,
+      url: `https://seusite.com.br/product/${product.slug}`,
+      images: [
+        {
+          url: product.image_url,
+          width: 800,
+          height: 800,
+          alt: product.title,
+        },
+      ],
+    },
+  };
+}
+
+// 2. Componente da Página
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   // Puxa o produto diretamente do PostgreSQL (Neon)
   const product = await getProductBySlug(params.slug);

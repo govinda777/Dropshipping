@@ -7,11 +7,41 @@ Abandonamos soluções externas (como Sanity e n8n) para centralizar a operaçã
 *   **Dashboard e Gestão Integrada:** No painel `/admin`, você tem visão completa: uma Lista de Produtos (`/admin/products`) e uma Lista de Pedidos (`/admin/orders`).
 
 ### Fase 2: Fluxo Assistido de Criação de Produto (Stepper com IA)
-A criação de um produto (`/admin/products/new`) ocorre em 4 passos lineares focados em conversão e segurança:
-1. **Sourcing:** Você apenas cola o link do AliExpress. Nosso sistema puxa fotos, preço de custo e variantes usando a API do fornecedor.
-2. **Reputação:** O sistema avalia dados vitais do fornecedor (tempo de loja, avaliações, etc.) e você aprova antes de continuar.
-3. **Qualidade e Segurança Técnica:** O sistema escaneia os dados originais em busca de certificações críticas de escalada (UIAA, CE). Emite um alerta se não encontrar provas técnicas!
-4. **Gerador IA (Gemini) e Precificação:** A IA (Google Gemini) traduz e gera uma descrição otimizada, título em português e a base de conhecimento. Além disso, o sistema sugere o Preço de Venda ideal baseado nos seus custos. Você clica em "Publicar" e ele salva direto no seu banco PostgreSQL (Neon).
+
+## 🛠 Como funciona o Fluxo Assistido de Criação de Produtos
+
+Nosso painel administrativo (`/admin/products/new`) elimina o trabalho manual e utiliza a IA para garantir a segurança jurídica e o apelo comercial de equipamentos de escalada. O fluxo é dividido em 4 etapas:
+
+1. **Sourcing (Extração):** O lojista cola o link do AliExpress. A rota `/api/fetch-supplier` busca silenciosamente a foto original e o preço de custo em dólar.
+2. **Avaliação de Reputação:** O sistema exibe o tempo de existência do fornecedor e a velocidade de entrega para o lojista aprovar manualmente.
+3. **Análise de Segurança e IA:** O Next.js envia os dados brutos para o Google Gemini (`/api/generate-content`). A IA atua como um engenheiro de segurança:
+   - Vasculha os dados atrás de certificações obrigatórias de EPIs de escalada (como **CE** e **UIAA**).
+   - Traduz o título.
+   - Escreve uma carta de vendas em Markdown focada nos benefícios do esporte.
+   - Cria uma base de conhecimento (Q&A) para alimentar o chatbot da loja.
+4. **Precificação e Publicação:** A IA sugere um multiplicador de margem (ex: 2.5x). O lojista revisa o preço final sugerido e clica em publicar. A rota `/api/publish-product` injeta tudo no PostgreSQL (Neon DB).
+
+### Diagrama Visual do Fluxo de Produtos
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Lojista (Jules)
+    participant Admin as Next.js Admin (/admin)
+    participant API_F as API Fetch (/api/fetch-supplier)
+    participant Gemini as IA (Google Gemini)
+    participant BD as Neon DB (PostgreSQL)
+
+    Lojista->>Admin: Cola Link do AliExpress
+    Admin->>API_F: Extrai dados brutos, imagem e preço
+    API_F-->>Admin: Retorna dados do fornecedor
+    Lojista->>Admin: Aprova a reputação visualmente
+    Admin->>Gemini: Envia dados para análise (Prompt Seguro)
+    Gemini-->>Admin: Retorna JSON (Checklist CE/UIAA, SEO, Copy, Margem)
+    Lojista->>Admin: Revisa precificação e clica em "Publicar"
+    Admin->>BD: Salva o produto (Slug, HTML, Preço)
+    BD-->>Lojista: Produto disponível na Vitrine instantaneamente!
+```
 
 ### Fase 3: A Vitrine de Alta Velocidade (Next.js + Vercel)
 A sua loja é renderizada de forma ultrarrápida usando Next.js App Router (Vercel).
@@ -41,3 +71,29 @@ A transparência com o cliente é garantida sem que você precise trabalhar como
 4. O SDK do AliExpress compra e despacha o pedido na China de forma silenciosa.
 5. O GitHub Actions sincroniza o rastreamento automaticamente.
 6. Custo de infraestrutura web: R$ 0,00. Controle total dos dados: 100% seu.
+
+## ⚙️ Variáveis de Ambiente Necessárias (.env)
+O projeto roda 100% de graça utilizando serviços *Serverless*. Certifique-se de preencher:
+
+```env
+# Banco de Dados (Neon.tech)
+DATABASE_URL="postgresql://usuario:senha@ep-seu-banco.neon.tech/neondb"
+
+# Inteligência Artificial (Google AI Studio)
+GEMINI_API_KEY="AIzaSy_SuaChaveAqui"
+
+# Autenticação Web3 (Privy.io)
+NEXT_PUBLIC_PRIVY_APP_ID="seu_app_id_privy"
+
+# Gateway de Pagamento (Mercado Pago ou Efí)
+GATEWAY_ACCESS_TOKEN="APP_USR-seu-token"
+
+# Automação de Pedidos (AliExpress - Open Platform)
+ALIEXPRESS_APP_KEY="sua_chave"
+ALIEXPRESS_APP_SECRET="seu_segredo"
+ALIEXPRESS_SESSION_KEY="seu_token_de_sessao"
+
+# Rastreamento Automático via WhatsApp (Evolution API / Z-API)
+WHATSAPP_API_KEY="seu_token"
+WHATSAPP_INSTANCE_URL="https://sua_api.com"
+```
