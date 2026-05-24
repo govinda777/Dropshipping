@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "jose": "^6.2.3"
-  }
+  "name": "root",
+  "private": true,
+  "scripts": {}
 }
