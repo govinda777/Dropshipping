@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
       config={{
-        loginMethods: ['sms', 'email', 'google'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#059669', // Tailwind emerald-600
@@ -16,8 +16,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         },
         // Configuração de embedded wallets (Smart Wallets) para o usuário
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
-          noPromptOnSignature: true // Para uma experiência Web2 fluida no E-commerce
+          ethereum: {
+            createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
+          }
+          // Nota: 'noPromptOnSignature' foi removido ou movido nas versões recentes do @privy-io/react-auth.
+          // O comportamento padrão para embedded wallets geralmente atende ao fluxo de e-commerce sem confirmações indesejadas,
+          // ou isso deve ser controlado pelas UIs customizadas nos prompts de transação.
         }
       }}
     >

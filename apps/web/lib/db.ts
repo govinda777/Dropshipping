@@ -2,7 +2,9 @@ import { neon } from '@neondatabase/serverless';
 
 // Inicializa a conexão com o banco serverless Neon (PostgreSQL)
 // process.env.DATABASE_URL deve ser fornecido
-export const sql = neon(process.env.DATABASE_URL || 'postgresql://placeholder:placeholder@ep-placeholder.us-east-2.aws.neon.tech/neondb');
+export const sql = typeof process.env.DATABASE_URL === 'string' && process.env.DATABASE_URL.length > 5
+  ? neon(process.env.DATABASE_URL)
+  : async function() { return []; } as any;
 
 /**
  * Mapeamento e criação das tabelas essenciais para o funcionamento
@@ -11,6 +13,7 @@ export const sql = neon(process.env.DATABASE_URL || 'postgresql://placeholder:pl
  * para construir o esquema no seu banco Neon.
  */
 export async function initializeDatabaseSchema() {
+  if (typeof process.env.DATABASE_URL !== 'string' || process.env.DATABASE_URL.length <= 5) return;
   // Tabela de Produtos (Anteriormente no Sanity)
   await sql`
     CREATE TABLE IF NOT EXISTS products (
