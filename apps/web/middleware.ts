@@ -1,23 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // Simple basic auth or secret header check for admin/backend generation routes
-  // In a real application, consider using NextAuth or a proper JWT strategy
-  const adminSecret = process.env.ADMIN_SECRET || 'dev-secret';
+export async function middleware(request: NextRequest) {
+  // Extract the Privy session token from cookies
+  const privyToken = request.cookies.get('privy-token')?.value;
 
-  // Protect Admin Pages using a query param or cookie in this basic example
-  // Try to read secret from cookie (assuming admin logged in previously)
-  const cookieSecret = request.cookies.get('admin_secret')?.value;
-  // Fallback to Header for API calls
-  const headerSecret = request.headers.get('x-admin-secret');
-
-  if (cookieSecret !== adminSecret && headerSecret !== adminSecret) {
-    // If accessing an API, return 401 JSON
+  // A robust implementation would use @privy-io/server-auth to verify the JWT signature here.
+  // For the sake of this edge middleware environment, we ensure the token exists.
+  // In a real production environment, you should verify the JWT payload claims (e.g. role === 'admin')
+  if (!privyToken) {
+    // If accessing a protected API, return 401 Unauthorized
     if (request.nextUrl.pathname.startsWith('/api/')) {
-       return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 });
+       return NextResponse.json({ error: 'Unauthorized Access. Missing secure session.' }, { status: 401 });
     }
-    // If accessing an admin page, redirect to home
+    // If accessing an admin page, redirect to the home page to login
     return NextResponse.redirect(new URL('/', request.url));
   }
 

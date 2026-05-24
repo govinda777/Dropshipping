@@ -30,20 +30,32 @@ Retorne APENAS o objeto JSON bruto, sem formatação de markdown \`\`\`json no i
       body: JSON.stringify({
         contents: [
           { parts: [{ text: prompt }] }
-        ]
+        ],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "object",
+            properties: {
+              title: { type: "string" },
+              slug: { type: "string" },
+              qualityEvaluation: { type: "string" },
+              certificationsChecklist: { type: "array", items: { type: "string" } },
+              technicalExplanation: { type: "string" },
+              descriptionHtml: { type: "string" },
+              knowledgeBase: { type: "string" },
+              suggestedPrice: { type: "number" }
+            },
+            required: ["title", "slug", "qualityEvaluation", "certificationsChecklist", "technicalExplanation", "descriptionHtml"]
+          }
+        }
       })
     });
 
     const data = await response.json();
-    const generatedText = data.candidates[0].content.parts[0].text;
-
-    // Attempt to parse JSON safely by stripping potential markdown codeblocks that Gemini sometimes adds despite instructions
-    const cleanJsonString = generatedText.replace(/```json/g, '').replace(/```/g, '').trim();
-    const resultJson = JSON.parse(cleanJsonString);
-
+    const resultJson = JSON.parse(data.candidates[0].content.parts[0].text);
     return NextResponse.json(resultJson);
   } catch (error) {
-    console.error('Erro na geração de conteúdo Gemini:', error);
-    return NextResponse.json({ error: 'Falha ao processar IA do Gemini' }, { status: 500 });
+    console.error('Erro na geração estruturada do Gemini:', error);
+    return NextResponse.json({ error: 'Falha ao processar IA estruturada' }, { status: 500 });
   }
 }

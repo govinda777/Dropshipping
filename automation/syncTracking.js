@@ -20,10 +20,11 @@ async function main() {
         order_id: parseInt(order.aliexpress_order_id)
       });
 
+      const orderStatus = details.result.order_status;
       const trackingCode = details.result.tracking_number;
 
-      // Se o código de rastreio já foi gerado pela transportadora chinesa:
-      if (trackingCode) {
+      // Ensure the order has passed the payment phase and is actually shipped/accepted by the buyer
+      if (orderStatus === 'WAIT_BUYER_ACCEPT_GOODS' && trackingCode) {
         // 1. Atualiza o banco Neon
         await sql`
           UPDATE orders
