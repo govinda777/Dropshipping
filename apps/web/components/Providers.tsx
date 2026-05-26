@@ -6,7 +6,7 @@ import React from 'react';
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || 'c000000000000000000000000'}
       config={{
         loginMethods: ['sms', 'email', 'google'],
         appearance: {
