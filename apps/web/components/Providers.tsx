@@ -8,7 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || 'c000000000000000000000000'}
       config={{
-        loginMethods: ['sms', 'email', 'google'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#059669', // Tailwind emerald-600
