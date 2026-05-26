@@ -8,7 +8,7 @@ export class FulfillOrderUseCase {
     this.aeClient = new DropshipperClient({
       app_key: process.env.ALIEXPRESS_APP_KEY || 'MOCK_KEY',
       app_secret: process.env.ALIEXPRESS_APP_SECRET || 'MOCK_SECRET',
-      session_key: process.env.ALIEXPRESS_SESSION_KEY || 'MOCK_SESSION'
+      session: process.env.ALIEXPRESS_SESSION_KEY || 'MOCK_SESSION'
     });
   }
 

@@ -6,9 +6,9 @@ import React from 'react';
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || 'c000000000000000000000000'}
       config={{
-        loginMethods: ['sms', 'email', 'google'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#059669', // Tailwind emerald-600
@@ -16,8 +16,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         },
         // Configuração de embedded wallets (Smart Wallets) para o usuário
         embeddedWallets: {
-          createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
-          noPromptOnSignature: true // Para uma experiência Web2 fluida no E-commerce
+          ethereum: {
+            createOnLogin: 'users-without-wallets', // Cria a carteira invisível automaticamente
+          }
         }
       }}
     >
