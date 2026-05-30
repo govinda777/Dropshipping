@@ -13,12 +13,11 @@ export default async function proxy(request: NextRequest) {
   }
 
   try {
-    const adminPrivyId = process.env.ADMIN_PRIVY_ID;
     const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
     // Fail secure: If environment variables are missing, deny all admin access
-    if (!adminPrivyId || !privyAppId) {
-      console.error('Missing critical ADMIN_PRIVY_ID or NEXT_PUBLIC_PRIVY_APP_ID env variables.');
+    if (!privyAppId) {
+      console.error('Missing critical NEXT_PUBLIC_PRIVY_APP_ID env variable.');
       return NextResponse.redirect(new URL('/', request.url));
     }
 
@@ -32,8 +31,9 @@ export default async function proxy(request: NextRequest) {
       audience: privyAppId,
     });
 
-    // Verify the subject claim is explicitly our admin
-    if (payload.sub !== adminPrivyId) {
+    // Verify if user has the 'admin' role in Privy claims
+    const roles = (payload.roles as string[]) || [];
+    if (!roles.includes('admin')) {
       if (request.nextUrl.pathname.startsWith('/api/')) {
          return NextResponse.json({ error: 'Acesso Negado: Permissões insuficientes.' }, { status: 403 });
       }
