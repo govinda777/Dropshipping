@@ -1,14 +1,15 @@
 import { getOrderForFulfillment, updateOrderFulfillment } from '../../data/orders';
 import { DropshipperClient } from 'ae_sdk';
+import { env } from '../../lib/env';
 
 export class FulfillOrderUseCase {
   private aeClient: any;
 
   constructor() {
     this.aeClient = new DropshipperClient({
-      app_key: process.env.ALIEXPRESS_APP_KEY || 'MOCK_KEY',
-      app_secret: process.env.ALIEXPRESS_APP_SECRET || 'MOCK_SECRET',
-      session: process.env.ALIEXPRESS_SESSION_KEY || 'MOCK_SESSION'
+      app_key: env.ALIEXPRESS_APP_KEY,
+      app_secret: env.ALIEXPRESS_APP_SECRET,
+      session: env.ALIEXPRESS_SESSION_KEY
     });
   }
 

@@ -72,8 +72,19 @@ A transparência com o cliente é garantida sem que você precise trabalhar como
 5. O GitHub Actions sincroniza o rastreamento automaticamente.
 6. Custo de infraestrutura web: R$ 0,00. Controle total dos dados: 100% seu.
 
+## 🏛️ Arquitetura SOLID e Injeção de Dependências (DI)
+
+O projeto `apps/web` adota as melhores práticas de **Clean Architecture** e princípios **SOLID** para garantir testabilidade, extensibilidade e robustez:
+
+*   **Camada de Domínio (`domain/`):** Totalmente isolada de detalhes tecnológicos. Contém as regras de negócio puras (Use Cases) e as definições das interfaces abstratas (ex: `IProductRepository`, `IOrderRepository`, `IPaymentService`, `IFulfillmentService`).
+*   **Camada de Infraestrutura/Dados (`infrastructure/`):** Contém as implementações técnicas das interfaces do domínio (ex: banco Neon em SQL, integrações com APIs do MercadoPago e SDK do AliExpress).
+*   **DI Container (`infrastructure/di/container.ts`):** Centralizador e fábrica de dependências com inicialização sob demanda (*lazy-loading*). Ele acopla as instâncias concretas às interfaces requeridas pelos Use Cases.
+*   **Controllers (API Routes):** Rotas leves que apenas invocam o Use Case correspondente resolvido pelo `container`, garantindo conformidade estrita com o princípio de Responsabilidade Única (SRP).
+
+---
+
 ## ⚙️ Variáveis de Ambiente Necessárias (.env)
-O projeto roda 100% de graça utilizando serviços *Serverless*. Certifique-se de preencher:
+O projeto roda utilizando serviços *Serverless*. Todas as variáveis no ambiente de desenvolvimento possuem fallbacks (valores padrão seguros/mocks), prevenindo quebras na inicialização. Em produção, certifique-se de configurar:
 
 ```env
 # Banco de Dados (Neon.tech)
@@ -82,12 +93,15 @@ DATABASE_URL="postgresql://usuario:senha@ep-seu-banco.neon.tech/neondb"
 # Inteligência Artificial (Google AI Studio)
 GEMINI_API_KEY="AIzaSy_SuaChaveAqui"
 
-# Autenticação Web3 (Privy.io) e Roles
+# Autenticação Privy.io
 NEXT_PUBLIC_PRIVY_APP_ID="seu_app_id_privy"
 PRIVY_APP_SECRET="seu_app_secret_privy_para_buscas_server_side"
-ADMIN_PRIVY_ID="did:privy:seu_id_do_administrador_para_proteger_as_rotas"
 
-# Gateway de Pagamento (Mercado Pago ou Efí)
+# Nota sobre Controle de Administradores:
+# A validação de Admin não usa mais variáveis estáticas como ADMIN_PRIVY_ID.
+# Ela é validada em tempo de execução via claims de Roles (role = 'admin') embutida no token JWT do Privy.
+
+# Gateway de Pagamento (Mercado Pago)
 GATEWAY_ACCESS_TOKEN="APP_USR-seu-token"
 
 # Automação de Pedidos (AliExpress - Open Platform)

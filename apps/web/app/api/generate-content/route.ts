@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { env } from '../../../lib/env';
 
 export async function POST(req: Request) {
   try {
@@ -22,7 +23,7 @@ Gere um output estritamente em formato JSON contendo as seguintes chaves:
 
 Retorne APENAS o objeto JSON bruto, sem formatação de markdown \`\`\`json no início ou no fim.`;
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${env.GEMINI_API_KEY}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

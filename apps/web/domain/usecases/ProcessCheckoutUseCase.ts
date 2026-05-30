@@ -1,5 +1,6 @@
 import { getProductById } from '../../data/products';
 import { createOrder } from '../../data/orders';
+import { env } from '../../lib/env';
 
 export class ProcessCheckoutUseCase {
   async execute(params: {
@@ -27,7 +28,7 @@ export class ProcessCheckoutUseCase {
     const pixResponse = await fetch('https://api.mercadopago.com/v1/payments', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.GATEWAY_ACCESS_TOKEN}`,
+        'Authorization': `Bearer ${env.GATEWAY_ACCESS_TOKEN}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({

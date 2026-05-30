@@ -1,8 +1,8 @@
 import { neon } from '@neondatabase/serverless';
+import { env } from './env';
 
 // Inicializa a conexão com o banco serverless Neon (PostgreSQL)
-// process.env.DATABASE_URL deve ser fornecido
-export const sql = neon(process.env.DATABASE_URL || 'postgresql://placeholder:placeholder@ep-placeholder.us-east-2.aws.neon.tech/neondb');
+export const sql = neon(env.DATABASE_URL);
 
 /**
  * Mapeamento e criação das tabelas essenciais para o funcionamento

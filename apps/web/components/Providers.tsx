@@ -2,11 +2,12 @@
 
 import { PrivyProvider } from '@privy-io/react-auth';
 import React from 'react';
+import { env } from '../lib/env';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || 'c000000000000000000000000'}
+      appId={env.NEXT_PUBLIC_PRIVY_APP_ID}
       config={{
         loginMethods: ['email'],
         appearance: {

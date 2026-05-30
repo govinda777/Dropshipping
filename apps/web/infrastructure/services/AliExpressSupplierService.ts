@@ -1,4 +1,5 @@
 import { ISupplierService, SupplierData } from '../../domain/interfaces/ISupplierService';
+import { env } from '../../lib/env';
 // Importação do SDK Open Source do AliExpress para TypeScript/JavaScript
 // import { DropshipperClient } from 'ae_sdk';
 
@@ -8,9 +9,9 @@ export class AliExpressSupplierService implements ISupplierService {
 
   constructor() {
     this.aeClient = new DropshipperClient({
-      app_key: process.env.ALIEXPRESS_APP_KEY || '',
-      app_secret: process.env.ALIEXPRESS_APP_SECRET || '',
-      session_key: process.env.ALIEXPRESS_SESSION_KEY || ''
+      app_key: env.ALIEXPRESS_APP_KEY,
+      app_secret: env.ALIEXPRESS_APP_SECRET,
+      session_key: env.ALIEXPRESS_SESSION_KEY
     });
   }
   */

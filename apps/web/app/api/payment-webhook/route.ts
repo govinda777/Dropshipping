@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { updateOrderStatus } from '../../../data/orders';
+import { env } from '../../../lib/env';
 
 export async function POST(req: Request) {
   try {
@@ -14,7 +15,7 @@ export async function POST(req: Request) {
 
       // 2. Em funções serverless padrão, precisamos dar await para garantir que a Vercel
       // não congele o container no meio da chamada externa do SDK do AliExpress.
-      const fulfillmentResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/fulfillment`, {
+      const fulfillmentResponse = await fetch(`${env.NEXT_PUBLIC_SITE_URL}/api/fulfillment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderId: id.toString() })

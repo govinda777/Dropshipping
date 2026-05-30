@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import * as jose from 'jose';
+import { env } from './lib/env';
 
 export default async function proxy(request: NextRequest) {
   const privyToken = request.cookies.get('privy-token')?.value;
@@ -13,13 +14,7 @@ export default async function proxy(request: NextRequest) {
   }
 
   try {
-    const privyAppId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
-
-    // Fail secure: If environment variables are missing, deny all admin access
-    if (!privyAppId) {
-      console.error('Missing critical NEXT_PUBLIC_PRIVY_APP_ID env variable.');
-      return NextResponse.redirect(new URL('/', request.url));
-    }
+    const privyAppId = env.NEXT_PUBLIC_PRIVY_APP_ID;
 
     // Secure JWT Verification using Edge-compatible jose library
     const privyJwksUrl = new URL(`https://auth.privy.io/api/v1/apps/${privyAppId}/jwks`);
