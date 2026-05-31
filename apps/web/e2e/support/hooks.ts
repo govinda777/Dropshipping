@@ -9,8 +9,12 @@ BeforeAll(async function () {
 });
 
 Before(async function (this: CustomWorld) {
-  // Inicia o navegador chromium para cada cenário
-  this.browser = await chromium.launch({ headless: true });
+  // Inicia o navegador chromium para cada cenário (suporta modo visual via variável de ambiente)
+  const showBrowser = (globalThis as any).process?.env?.SHOW_BROWSER === 'true';
+  this.browser = await chromium.launch({ 
+    headless: !showBrowser,
+    slowMo: showBrowser ? 1000 : 0
+  });
   this.context = await this.browser.newContext();
   this.page = await this.context.newPage();
 

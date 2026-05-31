@@ -2,20 +2,22 @@
 
 import { useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
+import { env } from '../lib/env';
 
 export default function ChatWidget() {
-  let privy;
-  try {
-    privy = usePrivy();
-  } catch (e) {
-    // Fallback amigável para testes/mocks
-    privy = {
-      user: { id: 'mock-user-id' },
-      authenticated: true
-    };
+  // Evita a chamada do hook se estiver em modo de teste/mock auth para respeitar as Regras de Hooks
+  if (
+    env.NEXT_PUBLIC_PRIVY_APP_ID === 'c000000000000000000000000' ||
+    process.env.NEXT_PUBLIC_MOCK_AUTH === 'true'
+  ) {
+    return <ChatWidgetContent user={{ id: 'mock-user-id' }} authenticated={true} />;
   }
 
-  const { user, authenticated } = privy;
+  const { user, authenticated } = usePrivy();
+  return <ChatWidgetContent user={user} authenticated={authenticated} />;
+}
+
+function ChatWidgetContent({ user, authenticated }: { user: any; authenticated: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{ role: 'user' | 'ai'; text: string }[]>([]);
   const [input, setInput] = useState('');

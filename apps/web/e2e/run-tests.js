@@ -4,7 +4,7 @@ const path = require('path');
 
 console.log('🚀 Iniciando servidor Next.js para testes E2E com Mocks...');
 
-const PORT = 3000;
+const PORT = 3050;
 const env = { 
   ...process.env, 
   MOCK_DB: 'true', 

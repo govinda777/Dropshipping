@@ -57,8 +57,8 @@ Given('que eu navego para a página de criação de produto {string}', async fun
     (window as any).ttq = mockTtq;
   });
 
-  const response = await page.goto(`http://localhost:3000${url}`);
-  console.log(`[Given] Navegou para http://localhost:3000${url}, status: ${response?.status()}, URL final: ${page.url()}`);
+  const response = await page.goto(`http://localhost:3050${url}`);
+  console.log(`[Given] Navegou para http://localhost:3050${url}, status: ${response?.status()}, URL final: ${page.url()}`);
 });
 
 When('eu preencho o link do fornecedor com {string}', async function (this: CustomWorld, supplierUrl: string) {

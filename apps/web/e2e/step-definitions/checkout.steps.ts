@@ -33,7 +33,7 @@ Given('que eu navego para a página do produto {string}', async function (this: 
   });
 
   // Acessa a página do produto (resolvido via mock de banco em db.ts)
-  await page.goto(`http://localhost:3000/product/${slug}`);
+  await page.goto(`http://localhost:3050/product/${slug}`);
 });
 
 When('eu clico no botão {string}', async function (this: CustomWorld, buttonText: string) {
