@@ -1,3 +1,5 @@
+pnpm --filter web dev:mock
+
 # Plano de Implementação de Dropshipping
 
 Aqui está o plano de implementação completo para o seu repositório `https://github.com/govinda777/Dropshipping`. Ele foi desenhado para ser **simples de operar**, **100% transparente**, com **custo zero de infraestrutura** e integrado com inteligência artificial para criar conteúdo automaticamente.
