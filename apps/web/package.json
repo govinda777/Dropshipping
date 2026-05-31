@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:e2e": "node e2e/run-tests.js"
+    "test:e2e": "node e2e/run-tests.js",
+    "dev:mock": "node e2e/run-mock.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "latest",
