@@ -5,10 +5,23 @@ import { CustomWorld } from '../support/world';
 Given('que eu navego para a página do produto {string}', async function (this: CustomWorld, slug: string) {
   const page = this.page!;
   
-  // Bloqueia scripts de terceiros do TikTok para que não sobreponham o mock local de ttq
+  // Bloqueia scripts de terceiros do TikTok e mocka ViaCEP
   await page.route('**/*', (route) => {
-    if (route.request().url().includes('tiktok.com')) {
+    const url = route.request().url();
+    if (url.includes('tiktok.com')) {
       route.abort();
+    } else if (url.includes('viacep.com.br')) {
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          logradouro: 'Av. Paulista',
+          bairro: 'Bela Vista',
+          localidade: 'São Paulo',
+          uf: 'SP',
+          cep: '01311-000'
+        })
+      });
     } else {
       route.continue();
     }
@@ -59,3 +72,27 @@ Then('a chamada de analytics do TikTok Pixel {string} deve ser disparada', async
   expect(found).toBeDefined();
   expect(found[2].currency).toBe('BRL');
 });
+
+When('eu preencho os dados pessoais com nome {string}, email {string} e cpf {string}', async function (this: CustomWorld, name: string, email: string, cpf: string) {
+  const page = this.page!;
+  await page.getByPlaceholder('Ex: João Silva').fill(name);
+  await page.getByPlaceholder('joao@email.com').fill(email);
+  await page.getByPlaceholder('000.000.000-00').fill(cpf);
+});
+
+When('eu preencho o cep {string} e o número {string}', async function (this: CustomWorld, cep: string, number: string) {
+  const page = this.page!;
+  await page.getByPlaceholder('00000-000').fill(cep);
+  // Espera um momento curto para o preenchimento automático do ViaCEP mockado acontecer
+  await page.waitForTimeout(800);
+  await page.getByPlaceholder('123').fill(number);
+});
+
+Then('eu devo ver o texto {string} e o botão {string}', async function (this: CustomWorld, expectedText: string, buttonName: string) {
+  const page = this.page!;
+  // Espera até que o texto esperado apareça na tela (ex: "Pedido #")
+  await expect(page.locator('body')).toContainText(expectedText);
+  // Espera que o botão com o nome fornecido esteja visível
+  await expect(page.getByRole('button', { name: buttonName, exact: false })).toBeVisible();
+});
+
