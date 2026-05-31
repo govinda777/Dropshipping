@@ -4,8 +4,9 @@ import { getProductBySlug } from '../../../data/products';
 import { Metadata } from 'next';
 
 // 1. Geração Dinâmica de SEO (Otimização para o Google)
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const product = await getProductBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return { title: 'Produto não encontrado | Sua Loja' };
@@ -18,12 +19,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${product.title} | Equipamentos de Escalada`,
     description: plainTextDescription,
     alternates: {
-      canonical: `https://seusite.com.br/product/${product.slug}`,
+      canonical: `https://seusite.com.br/product/${slug}`,
     },
     openGraph: {
       title: product.title,
       description: plainTextDescription,
-      url: `https://seusite.com.br/product/${product.slug}`,
+      url: `https://seusite.com.br/product/${slug}`,
       images: [
         {
           url: product.image_url,
@@ -37,15 +38,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 // 2. Componente da Página
-export default async function ProductPage({ params }: { params: { slug: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   // Puxa o produto diretamente do PostgreSQL (Neon)
-  const product = await getProductBySlug(params.slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) return <div className="text-center p-10">Produto não encontrado.</div>;
 
   return (
     <main className="max-w-4xl mx-auto p-4 md:py-12 grid md:grid-cols-2 gap-8 font-sans">
-      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center">
+      <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center" style={{ position: 'relative', width: '100%', height: '300px' }}>
         {product.image_url ? (
           <Image src={product.image_url} alt={product.title} fill className="object-cover" priority />
         ) : (

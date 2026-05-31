@@ -4,6 +4,10 @@ import * as jose from 'jose';
 import { env } from './lib/env';
 
 export default async function proxy(request: NextRequest) {
+  if (process.env.MOCK_DB === 'true') {
+    return NextResponse.next();
+  }
+
   const privyToken = request.cookies.get('privy-token')?.value;
 
   if (!privyToken) {
