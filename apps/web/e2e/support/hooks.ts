@@ -23,8 +23,8 @@ Before(async function (this: CustomWorld) {
     slowMo: showBrowser ? 1000 : 0
   });
 
-  // Configura a gravação de vídeos na pasta e2e/artifacts/videos
-  const vidDir = path.join(process.cwd(), 'e2e/artifacts/videos');
+  // Configura a gravação de vídeos na pasta public/e2e/videos
+  const vidDir = path.join(process.cwd(), 'public/e2e/videos');
   if (!fs.existsSync(vidDir)) {
     fs.mkdirSync(vidDir, { recursive: true });
   }
@@ -48,7 +48,7 @@ After(async function (this: CustomWorld, scenario) {
   const status = scenario.result?.status.toLowerCase() || 'unknown';
 
   // Garante a existência do diretório de screenshots
-  const ssDir = path.join(process.cwd(), 'e2e/artifacts/screenshots');
+  const ssDir = path.join(process.cwd(), 'public/e2e/screenshots');
   if (!fs.existsSync(ssDir)) {
     fs.mkdirSync(ssDir, { recursive: true });
   }
@@ -108,7 +108,7 @@ After(async function (this: CustomWorld, scenario) {
   // Renomeia o arquivo do vídeo gravado para o nome do cenário
   if (tempVideoPath && fs.existsSync(tempVideoPath)) {
     try {
-      const finalVideoPath = path.join(process.cwd(), 'e2e/artifacts/videos', `${scenarioName}_${status}.webm`);
+      const finalVideoPath = path.join(process.cwd(), 'public/e2e/videos', `${scenarioName}_${status}.webm`);
       fs.renameSync(tempVideoPath, finalVideoPath);
     } catch (err: any) {
       console.log(`Erro ao renomear vídeo: ${err.message}`);

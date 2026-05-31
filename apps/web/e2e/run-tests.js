@@ -1,6 +1,13 @@
 const { spawn } = require('child_process');
 const http = require('http');
 const path = require('path');
+const fs = require('fs');
+
+// Limpa os artefatos antigos na pasta public
+const e2eDir = path.resolve(__dirname, '../public/e2e');
+if (fs.existsSync(e2eDir)) {
+  fs.rmSync(e2eDir, { recursive: true, force: true });
+}
 
 console.log('🚀 Iniciando servidor Next.js para testes E2E com Mocks...');
 
