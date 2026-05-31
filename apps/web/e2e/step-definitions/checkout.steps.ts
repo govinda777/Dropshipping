@@ -36,8 +36,9 @@ Given('que eu navego para a página do produto {string}', async function (this: 
     mockTtq.push = function(...args: any[]) {
       Array.prototype.push.apply(this, args);
     };
-    mockTtq.track = (event: string, data: any) => {
+    mockTtq.track = function(event: string, data: any) {
       pixelCalls.push({ event, data });
+      this.push(['track', event, data]);
     };
     mockTtq.page = noop;
     mockTtq.load = noop;

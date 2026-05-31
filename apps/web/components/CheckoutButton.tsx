@@ -31,12 +31,21 @@ export default function CheckoutButton({ product }: { product: any }) {
   const [copied, setCopied] = useState(false);
 
   const handleCheckoutInit = () => {
-    if (typeof window !== 'undefined' && window.ttq) {
-      window.ttq.track('InitiateCheckout', {
-        content_name: product.title,
-        value: product.price,
-        currency: 'BRL',
-      });
+    if (typeof window !== 'undefined') {
+      window.ttq = window.ttq || [];
+      if (typeof window.ttq.track === 'function') {
+        window.ttq.track('InitiateCheckout', {
+          content_name: product.title,
+          value: product.price,
+          currency: 'BRL',
+        });
+      } else {
+        window.ttq.push(['track', 'InitiateCheckout', {
+          content_name: product.title,
+          value: product.price,
+          currency: 'BRL',
+        }]);
+      }
     }
     setIsOpen(true);
     setStep(1);
@@ -68,16 +77,16 @@ export default function CheckoutButton({ product }: { product: any }) {
     let value = e.target.value.replace(/\D/g, '');
     if (value.length > 8) value = value.slice(0, 8);
     
+    // Auto-fill address using ViaCEP if ZIP is valid (clean length is 8)
+    if (value.length === 8) {
+      fetchAddress(value);
+    }
+
     // Simple CEP mask: 00000-000
     if (value.length > 5) {
       value = `${value.slice(0, 5)}-${value.slice(5)}`;
     }
     setZipCode(value);
-
-    // Auto-fill address using ViaCEP if ZIP is valid
-    if (value.length === 8) {
-      fetchAddress(value);
-    }
   };
 
   const fetchAddress = async (cep: string) => {
